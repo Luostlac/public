@@ -4,9 +4,8 @@ library(Biobase)
 library(Seurat)
 
 
-pbmc=readRDS('../Cerebellum/pbmc_sub.rds')
+pbmc=readRDS('../Cerebellum/fetal_cerebellum_neurons.rds')##only use neuronal cells for the MuSiC  
 
-#TMP=read.table('SHH_G3_G4_markers.txt',sep='\t',row.names=NULL,header=T)
 TMP=read.table('MB1_RNA_for_deconv_all.csv',sep=',',row.names=NULL,header=T)
 TMP=TMP[which(TMP[,1] %in% names(which(table(TMP[,1])==1))),]
 BULK=TMP[,c(2:ncol(TMP))]
@@ -47,6 +46,8 @@ MUSIC=MUSIC[,order(colnames(MUSIC))]
 
 
 saveRDS(Est.bulk,'MUSIC_result_all.rds')
+MUSIC=Est.bulk$Est.prop.weighted
+MUSIC=MUSIC[,order(colnames(MUSIC))]
 write.table(MUSIC,file='MUSIC_prop_all.txt',sep='\t',quote=F,row.names=T,col.names=T)
 
 
